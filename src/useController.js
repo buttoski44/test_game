@@ -7,13 +7,14 @@ export const useController = () => {
     left: true,
     right: false,
   });
+
   const [state, dispatch] = useReducer(reducer, { left: 0, top: 0 });
   function reducer(state, action) {
     switch (action.type) {
       case "right":
         if (state.left + 100 >= 500) {
           setDiabled({ ...disabled, right: true });
-        } else {
+        } else if (disabled.left) {
           setDiabled({ ...disabled, left: false });
         }
         return {
@@ -23,7 +24,7 @@ export const useController = () => {
       case "left":
         if (state.left === 50) {
           setDiabled({ ...disabled, left: true });
-        } else {
+        } else if (disabled.right) {
           setDiabled({ ...disabled, right: false });
         }
         return {
@@ -33,7 +34,7 @@ export const useController = () => {
       case "up":
         if (state.top === 50) {
           setDiabled({ ...disabled, up: true });
-        } else {
+        } else if (disabled.down) {
           setDiabled({ ...disabled, down: false });
         }
         return {
@@ -43,7 +44,7 @@ export const useController = () => {
       case "down":
         if (state.top + 100 >= 500) {
           setDiabled({ ...disabled, down: true });
-        } else {
+        } else if (disabled.up) {
           setDiabled({ ...disabled, up: false });
         }
         return {
